@@ -35,23 +35,41 @@ User experiment research, surveys, human focus groups give deep quanlitative dat
 Example Audacity learning website wants to test a change on Audacity page. <br>
 <b>Experiment:</b> <br>
 Hypothesis: Changing the "Start Now" button from orange to pink will increase how many students explore Audacity course
+#### Metric choice:
+1. Click through rate = Number of Clicks / Number of page vists (Measure usability)
+2. Click through probability = unique vistors who clicked / unique visitors to page (Measure total impact)
 
-Metrics:
-1. Click through rate = Number of Clicks / Number of page vists
-2. Click through probability = unique vistors who clicked / unique visitors to page
-3. Distribution is binomial as 2 outcomes 
+In our case we will use click-through probability as we want to measure the impact
 
-![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}](https://latex.codecogs.com/svg.latex?x%3D%5Cfrac%7B-b%5Cpm%5Csqrt%7Bb%5E2-4ac%7D%7D%7B2a%7D)
+<b> How to compute rate & probability? </b> </br>
+<b> Rate: </b> on every page view you capture the event, and then whenever a user clicks you also capture that click event <br>
+Sum(Page views)/ sum(clicks) <br>
+<b> Probability: </b> match each page view with all of the child clicks, so that you count, at most, one child click per page view.
+
+#### Distribution
+We have exactly 2 different outcomes, click and no click.
+#### Binomial Distribution
+
+For a binomial distribution with probability 𝑝 , the mean is given by 𝑝 and the standard deviation is sqrt(𝑝×(1−𝑝)/𝑁) where 𝑁 is the number of trials.
+
+A binomial distribution can be used when <br>
+* The outcomes are of 2 types 
+* Each event is independent of the other 
+* Each event has an identical distribution (i.e. 𝑝 is the same for all)
+
+We expect click-through probability to follow a binomial distribution
 
 
+<b>Confidence Interval</b> <br>
+Benefit of knowing binomial distribution is we can use the formula for sample standard error for binomial distribution to measure how variable we expect our overall probability of click to be. For 95% confidence interval, if we repeat our experiment over and over again we can expect the interval we construct around our sample mean to cover the true value of our population 95% of the time.
 
-<b>Confidence Interval</b>
+
 phat = X / N (# users who clicked/ # users)
 
 Lets say; X = 100 and N = 1000 <br>
 phat = 0.1
 
-To use normal check N * phat > 5 and N * (1-phat) > 5
+To use normal distribution check N * phat > 5 and N * (1-phat) > 5 
 
 margin of error m = z * SE
 m = z * sqrt( (phat * (1 - phat))/ N ) <br>
