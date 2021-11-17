@@ -99,7 +99,7 @@ H<sub>A</sub>: <i>P</i><sub>exp</sub> -  <i>P</i><sub>cont</sub> ≠ 0
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;{\hat{P}&space;=&space;\frac{X_{cont}&plus;&space;X_{exp}}{N_{cont}&plus;&space;N_{exp}}}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bg_white&space;{\hat{P}&space;=&space;\frac{X_{cont}&plus;&space;X_{exp}}{N_{cont}&plus;&space;N_{exp}}}" title="{\hat{P} = \frac{X_{cont}+ X_{exp}}{N_{cont}+ N_{exp}}}" /></a>
 
-<a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;SE_{pool}&space;=&space;\sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}&plus;\frac{1}{N_{exp}})}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\bg_white&space;SE_{pool}&space;=&space;\sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}&plus;\frac{1}{N_{exp}})}" title="SE_{pool} = \sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}+\frac{1}{N_{exp}})}" /></a>
+<a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;SE_{pool}&space;=&space;\sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}&plus;\frac{1}{N_{exp}})}" target="_blank"><img style="background: white;" src="https://latex.codecogs.com/svg.latex?\bg_white&space;SE_{pool}&space;=&space;\sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}&plus;\frac{1}{N_{exp}})}" title="SE_{pool} = \sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}+\frac{1}{N_{exp}})}" /></a>
 
 
 References:
