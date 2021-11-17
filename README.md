@@ -2,10 +2,17 @@
 AB Testing Notes from Udacity course https://classroom.udacity.com/courses/ud257
 
 ## Contents
-1. Overview
+- [1. Overview](#overview)
+  - [1.1 Metric Choice](#metric-choice) 
+  - [1.2 Distribution](#distribution) 
+  - [1.3 Confidence Interval](#confidence-interval) 
+  - [1.4 Hypothesis Testing](#hypothesis-testing) 
+  - [1.5 Standard Error](#standard-error) 
+  - [1.6 Calculating Results](#calculating-results) 
+  - [1.7 Conclusion](#conclusion) 
 
 
-## 1. Overview
+## 1. Overview  <a name="overview"></a>
 A/B testing is a general methodology used to test a new product or a feature. Users are split in two groups, control set exposed to exsisting version of product of feature and a new group, experiment set exposed to new version of the feature and measure how do these users behave differently in order understand which feature is better. <br>
 
 A/B testing is useful for <br>
@@ -35,7 +42,7 @@ User experiment research, surveys, human focus groups give deep quanlitative dat
 Example Audacity learning website wants to test a change on Audacity page. <br>
 <b>Experiment:</b> <br>
 Hypothesis: Changing the "Start Now" button from orange to pink will increase how many students explore Audacity course
-#### Metric choice:
+### 1.1 Metric choice <a name="metric-choice"></a>
 1. Click through rate = Number of Clicks / Number of page vists (Measure usability)
 2. Click through probability = unique vistors who clicked / unique visitors to page (Measure total impact)
 
@@ -46,7 +53,7 @@ In our case we will use click-through probability as we want to measure the impa
 Sum(Page views)/ sum(clicks) <br>
 <b> Probability: </b> match each page view with all of the child clicks, so that you count, at most, one child click per page view.
 
-#### Distribution
+### 1.2 Distribution <a name="distribution"></a>
 We have exactly 2 different outcomes, click and no click.
 #### Binomial Distribution
 
@@ -60,8 +67,9 @@ A binomial distribution can be used when <br>
 We expect click-through probability to follow a binomial distribution
 
 
-<b>Confidence Interval</b> <br>
+### 1.3 Confidence Interval <a name="confidence-interval"></a>
 Benefit of knowing binomial distribution is we can use the formula for sample standard error for binomial distribution to measure how variable we expect our overall probability of click to be. For 95% confidence interval, if we repeat our experiment over and over again we can expect the interval we construct around our sample mean to cover the true value of our population 95% of the time.
+
 
 
 phat = X / N (# users who clicked/ # users)
@@ -80,8 +88,21 @@ so confidence interval @95% is (phat - m, phat + m)
 (0.1 - 0.019, 0.1 + 0.019) <br>
 so we would see between 81 ~ 119 click
 
+### 1.4 Hypothesis testing <a name="hypothesis-testing"></a>
+We want to calculate what is the probability that the results are due to a chance <br>
+H<sub>o</sub>: <i>P</i><sub>exp</sub> -  <i>P</i><sub>cont</sub> = 0 <br>
+H<sub>A</sub>: <i>P</i><sub>exp</sub> -  <i>P</i><sub>cont</sub> ≠ 0
 
-Refrences:
+### 1.5 Standard Error   <a name="standard-error"></a>
+ <a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;{\hat{P}&space;=&space;\frac{X_{cont}&plus;&space;X_{exp}}{N_{cont}&plus;&space;N_{exp}}}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\bg_white&space;{\hat{P}&space;=&space;\frac{X_{cont}&plus;&space;X_{exp}}{N_{cont}&plus;&space;N_{exp}}}" title="{\hat{P} = \frac{X_{cont}+ X_{exp}}{N_{cont}+ N_{exp}}}" /></a>
+
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;{\hat{P}&space;=&space;\frac{X_{cont}&plus;&space;X_{exp}}{N_{cont}&plus;&space;N_{exp}}}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bg_white&space;{\hat{P}&space;=&space;\frac{X_{cont}&plus;&space;X_{exp}}{N_{cont}&plus;&space;N_{exp}}}" title="{\hat{P} = \frac{X_{cont}+ X_{exp}}{N_{cont}+ N_{exp}}}" /></a>
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;SE_{pool}&space;=&space;\sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}&plus;\frac{1}{N_{exp}})}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\bg_white&space;SE_{pool}&space;=&space;\sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}&plus;\frac{1}{N_{exp}})}" title="SE_{pool} = \sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}+\frac{1}{N_{exp}})}" /></a>
+
+
+References:
 
 https://classroom.udacity.com/courses/ud257
 
