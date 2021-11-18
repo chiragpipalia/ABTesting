@@ -72,23 +72,22 @@ We expect click-through probability to follow a binomial distribution
 Benefit of knowing binomial distribution is we can use the formula for sample standard error for binomial distribution to measure how variable we expect our overall probability of click to be. For 95% confidence interval, if we repeat our experiment over and over again we can expect the interval we construct around our sample mean to cover the true value of our population 95% of the time.
 
 
-
+```
 phat = X / N (# users who clicked/ # users)
 
-Lets say; X = 100 and N = 1000 <br>
+Lets say; X = 100 and N = 1000 
 phat = 0.1
 
 To use normal distribution check N * phat > 5 and N * (1-phat) > 5 
 
 margin of error m = z * SE
-m = z * sqrt( (phat * (1 - phat))/ N ) <br>
-m = 1.96 * sqrt( (0.1 * 0.9) / 1000) <br>
-m = 0.01859 <br>
+m = z * sqrt( (phat * (1 - phat))/ N ) 
+m = 1.96 * sqrt( (0.1 * 0.9) / 1000) 
+m = 0.01859 
 so confidence interval @95% is (phat - m, phat + m)
-
-(0.1 - 0.019, 0.1 + 0.019) <br>
+(0.1 - 0.019, 0.1 + 0.019) 
 so we would see between 81 ~ 119 click
-
+```
 ### 1.4 Hypothesis testing <a name="hypothesis-testing"></a>
 We want to calculate what is the probability that the results are due to a chance <br>
 H<sub>o</sub>: <i>P</i><sub>exp</sub> -  <i>P</i><sub>cont</sub> = 0 <br>
@@ -102,7 +101,6 @@ H<sub>A</sub>: <i>P</i><sub>exp</sub> -  <i>P</i><sub>cont</sub> ≠ 0
 
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;SE_{pool}&space;=&space;\sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}&plus;\frac{1}{N_{exp}})}" target="_blank"><img style="background: white;" src="https://latex.codecogs.com/svg.latex?\bg_white&space;SE_{pool}&space;=&space;\sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}&plus;\frac{1}{N_{exp}})}" title="SE_{pool} = \sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}+\frac{1}{N_{exp}})}" /></a> </p>
-
 
 
 
