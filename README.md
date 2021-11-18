@@ -9,8 +9,10 @@ AB Testing Notes from Udacity course https://classroom.udacity.com/courses/ud257
   - [1.3 Confidence Interval](#confidence-interval) 
   - [1.4 Hypothesis Testing](#hypothesis-testing) 
   - [1.5 Standard Error](#standard-error) 
-  - [1.6 Calculating Results](#calculating-results) 
-  - [1.7 Conclusion](#conclusion) 
+  - [1.6 Size vs Power Trade off](#size-power) 
+  - [1.7 Analyze Results](#analyze-results)
+- [2. Choosing and Characterizing Metric](#lesson2)
+
 
 
 ## 1. Overview  <a name="overview"></a>
@@ -96,11 +98,103 @@ H<sub>A</sub>: <i>P</i><sub>exp</sub> -  <i>P</i><sub>cont</sub> ≠ 0
 ### 1.5 Standard Error   <a name="standard-error"></a>
  <a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;{\hat{P}&space;=&space;\frac{X_{cont}&plus;&space;X_{exp}}{N_{cont}&plus;&space;N_{exp}}}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\bg_white&space;{\hat{P}&space;=&space;\frac{X_{cont}&plus;&space;X_{exp}}{N_{cont}&plus;&space;N_{exp}}}" title="{\hat{P} = \frac{X_{cont}+ X_{exp}}{N_{cont}+ N_{exp}}}" /></a>
 
-
-<a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;{\hat{P}&space;=&space;\frac{X_{cont}&plus;&space;X_{exp}}{N_{cont}&plus;&space;N_{exp}}}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bg_white&space;{\hat{P}&space;=&space;\frac{X_{cont}&plus;&space;X_{exp}}{N_{cont}&plus;&space;N_{exp}}}" title="{\hat{P} = \frac{X_{cont}+ X_{exp}}{N_{cont}+ N_{exp}}}" /></a>
-
-
 <a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;SE_{pool}&space;=&space;\sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}&plus;\frac{1}{N_{exp}})}" target="_blank"><img style="background: white;" src="https://latex.codecogs.com/svg.latex?\bg_white&space;SE_{pool}&space;=&space;\sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}&plus;\frac{1}{N_{exp}})}" title="SE_{pool} = \sqrt{\hat{P_{pool}}*(1-\hat{P_{pool})}*(\frac{1}{N_{cont}}+\frac{1}{N_{exp}})}" /></a> </p>
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;\hat{d}&space;=&space;\hat{p_{exp}}&space;-&space;\hat{p_{cont}}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\bg_white&space;\hat{d}&space;=&space;\hat{p_{exp}}&space;-&space;\hat{p_{cont}}" title="\hat{d} = \hat{p_{exp}} - \hat{p_{cont}}" /></a>
+
+
+H<sub>0</sub>: d = 0 where d<sub>hat</sub> ~ N(0, SE<sub>pool</sub>) <br>
+If d<sub>hat</sub>  > 1.96 * SE<sub>pool</sub> or  d<sub>hat</sub> < -1.96 * SE<sub>pool</sub>, reject null hypothesis
+
+
+#### Practical or Substantive Significance
+Practical significance is the level of change that you would expect to see from a business standpoint for the change to be valuable.
+
+The differences in the magnitudes for what's consider practically significant can be quite different. What you really want to observe is repeatability.
+
+Statistical significance is about repeatability. And you want to make sure when you setup your experiment that you get that guarantee that yes, these results are repeatable so it's statistically significant.
+
+The statistical significance bar is often lower than the practical significance bar, so that if the outcome is practically significance, it is also statistically significant.
+
+### Size vs Power trade off.  <a name="size-power"></a>
+Given that we have control over how many page views go into our control and expirement group, we need to decide how many page views we need in order to get a statistical significance result, this is called <b>statistical power</b>. Key thing is if we see something interesting we want to have enough power to conclude with high probability that the interesting result is in fact statistically significant. <br>
+Power has an inverse trade-off with size, the smaller the change you want to detect or increase confidence you want to have in the result means you have to run a larger experiment, that is more page views. <br>
+α = P(reject null | null true) -- False positive<br>
+β = P(fail to reject null | null false) -- False negative<br>
+
+As sample size increases, distribution become tighter around the mean, bring confidence interval closer.
+
+|α /β |Small Sample|Large Sample|
+|:---:|:---:|:---:|
+|α | α is low, unlikely to launch bad experiment | α remains the same|
+|β| β is high, more probably to not lauch an exp that made a difference| β is lower|
+
+Online sample size calculator
+https://www.evanmiller.org/ab-testing/sample-size.html
+
+
+#### As you change one of the parameters, your sample size will change as well.
+
+1. Higher click-through-probability in control but still less than 0.5 -> standard error increases -> more samples required. 
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;SE&space;=&space;\sqrt{\frac{p*(1-p)}{N}}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\bg_white&space;SE&space;=&space;\sqrt{\frac{p*(1-p)}{N}}" title="SE = \sqrt{\frac{p*(1-p)}{N}}" /></a>                   
+
+<i>SE = √0.5 * 0.5 = 0.5  <br>
+SE = √0.1 * 0.9 = 0.3 <br></i>
+as <i>p</i> gets closer to 0.5 <i>SE</i> increases
+
+2. As practical significance level (𝑑𝑚𝑖𝑛) increases, fewer samples are required since large changes are easier to detect
+3. With increase in confidence level (1−𝛼), you want to be more certain that you are rejecting the null. At the same sensivitiy, this would require increasing the number of samples
+4. If you want to increase the sensitivity (1−𝛽), you need to collect more samples
+
+
+### Analyze results  <a name="analyze-results"></a>
+
+N<sub>cont</sub> = 10072  ;Control samples (pageviews) <br>
+N<sub>exp</sub> = 9886  ;Test samples (pageviews) <br>
+X<sub>cont</sub> = 974  ;Control clicks <br>
+X<sub>exp</sub> = 1242  ;Exp. clicks <br>
+
+p<sub>pool</sub> = (X<sub>cont</sub> + X<sub>exp</sub>)/(N<sub>cont</sub>+N<sub>exp</sub>) <br>
+SE<sub>pool</sub> = sqrt(p<sub>pool</sub> * (1-p<sub>pool</sub>) * (1/N<sub>cont</sub>+ 1/N<sub>exp</sub>)) <br>
+
+p<sub>cont</sub> = X<sub>cont</sub>/N<sub>cont</sub> <br>
+p<sub>exp</sub> = X<sub>exp</sub>/N<sub>exp</sub> <br>
+d<sub>hat</sub> = p<sub>exp</sub> - p<sub>cont</sub> <br>
+d<sub>hat</sub> = 0.02892847 <br>
+
+m = 1.96*SE<sub>pool</sub> <br>
+cf<sub>min</sub> = d<sub>hat</sub>-m <br>
+cf<sub>max</sub> = d<sub>hat</sub>+m <br>
+d<sub>min</sub> = 0.02 ; Minimum practical significance value for difference <br>
+cf<sub>min</sub> = 0.0202105 <br>
+cf<sub>max</sub> = 0.03764645 <br>
+
+Since the minimum confidence limit is greater than 0 and the practical significance level of 0.02, we conclude that it is highly probable that click through probability is higher than 0.02 and is significant. Based on this, one would launch the new version.
+
+
+## 2. Choosing and Characterizing Metric <a name="lesson2"></a>
+Define Metric
+Build Intution
+Characterize
+
+<b>Define</b>
+* <b>Invariate metric:</b> Metrics that shouldn’t change between your test and control, used as a <b>sanity check</b>
+  * Do you have the same number of users across the two?
+  * Is the distribution the same?
+
+* <b>Evaluation metric:</b>  
+  * High level business metrics; how much revenue you make, what your market share is, how many users you have
+  * Detailed metrics: user experience with the product
+
+High level concept of metric, active users, ctp; more granular details, for eg. one time active user, new active uses, auto assigned active.
+You can pick 1 metric or entire suite of metric.
+
+OEC Overal Evaluation Criterion, weighted function the combines all different metrics.
+Issues with OEC
+a. Deciding on a definition, hard to define
+b. If over-optimize on 1 thing and not take into consideration other
+c. If metric not moving, you need to break the composite metric back to individual components
 
 
 
