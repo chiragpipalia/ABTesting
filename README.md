@@ -12,7 +12,7 @@ AB Testing Notes from Udacity course https://classroom.udacity.com/courses/ud257
   - [1.6 Size vs Power Trade off](#size-power) 
   - [1.7 Analyze Results](#analyze-results)
 - [2. Choosing and Characterizing Metric](#lesson2)
-
+  - [2.1 Define](#chap2define)
 
 
 ## 1. Overview  <a name="overview"></a>
@@ -148,7 +148,7 @@ as <i>p</i> gets closer to 0.5 <i>SE</i> increases
 4. If you want to increase the sensitivity (1−𝛽), you need to collect more samples
 
 
-### Analyze results  <a name="analyze-results"></a>
+### Analyze Results  <a name="analyze-results"></a>
 
 N<sub>cont</sub> = 10072  ;Control samples (pageviews) <br>
 N<sub>exp</sub> = 9886  ;Test samples (pageviews) <br>
@@ -178,7 +178,7 @@ Define Metric
 Build Intution
 Characterize
 
-<b>Define</b>
+### 2.1 Define  <a name="chap2define"></a>
 * <b>Invariate metric:</b> Metrics that shouldn’t change between your test and control, used as a <b>sanity check</b>
   * Do you have the same number of users across the two?
   * Is the distribution the same?
@@ -196,7 +196,111 @@ a. Deciding on a definition, hard to define
 b. If over-optimize on 1 thing and not take into consideration other
 c. If metric not moving, you need to break the composite metric back to individual components
 
+#### Gathering Additional Data
+* User Experience Research (UER)
+  + High depth but on few users
+  + Good for brainstorming
+  + Can use special equipment
+  - Want to validate results
+* Focus Groups
+  + Medium depth on medium number of participants
+  + Get feedback on hypotheticals
+  - Run the risk of group think
+* Surveys
+  + Low depth but high number of participants
+  + Useful for metrics you cannot directly measure
+  - Can not directly compare with other metrics as population differs, depends on how questions are framed and users might not necessarily tell the truth
 
+#### Metrics Definition and Data Capture
+Click-through-probability = total clicks/ total page views <br>
+nuanced version: cookie clicked/cookie visited site <br>
+
+Turning high level metric into more defined metric <br>
+High-level metric: CTP = #users who click/ #users who visit <br>
+```
+* Def #1; For each <time interval> = #cookies that click/ #cookies 
+* Def #2: #pageviews with click within <time interval>/ #pageviews 
+* Def /#3: /#clicks/ #pageviews (click-through-rate)
+```
+
+#### Filtering and Segmenting
+External reasons: We want to filter on site, abuse or fraud and not want to use that in metric. <br>
+What happens if the change affects only a segment of traffic (eg. int vs regional; mobile app vs web app), because you don't want to dilute the results and you can increase the power and sensitivity of the experimenting
+
+Goal of filtering is, to de-bias the data but you want to careful you dont introduce bias when filtering the data. While filtering you need to make sure it is not part of the experiment or logging causing the long/ weird sessions which are being filtered.
+
+##### How to decide a metric to use or not.
+* Building baseline.
+* Compute metric by different slices of disjoint sets (eg. region, demographic, platform) and want to make sure the metric does not affect any slice disproportionally, if it is then it might be a good thing if it is one slice where all your spam is coming from.
+* Week over Week or day-over-day or a single user data can be a good filter to filter out spam. 
+
+<b>Idea is to built a good intution to what changes are expected vs not expected so when you have data from the experiment you can make a call whether if there is problem or metrics are believable </b>
+
+#### Summary Metrics
+Per event measurement to one summary metric to combine all the different metrics
+
+* Sums and Counts - eg. #users who visited page
+* Means, medians and percentiles - eg. mean age of users who completed a course or mediam latency of page load
+* Probabilities and Rates - Probability has 0 or 1 outcome in each case; Rate has 0 or more
+* Ratios - eg. P(revenue-generating click)/ P(any click)
+
+##### Characteristics of Metric:
+* <b>Sensitivity and Robustness:</b> You want your metric to be sensitive enough that it picks up changes you care about but robust against changes you don't care about.
+* <b>Distribution:</b> The most ideal way of doing this is to do a retrospective analysis to compute a histogram.
+
+Sensitivity and Robustness
+
+Latency experiment example.
+Mean or median or neither
+* Mean is senstiive to outliers.
+* Median is roboust to outliers, but if you only affect fraction of users then median might not move at all you might want to use 90th or 99th percentile
+* A/A experiment to see if metric where you dont change anything, and pick up metric is not picking up any supurious changes
+* Retrospective analysis of logs you can check previous experiments and see of metrics move at all.
+
+##### Absolute or Relative Difference
+
+### Variablity
+Affects sizing of experiment and analyzing confidence interval and draw conclusions of the expirement
+
+#### Analytical vs Empirical
+<>Analytical</b>
+If doing count or probability then you're dealing with variablility of single measurement or constrained in case of probability <br>
+Click-through-probability whether the user clicked or not and summary metric was overall click-through-probability we were able to do analytical or theoritical variance we expected from our overall probability
+Other types of metric same thing works eg. normally distributed data.
+<>Empirical</b>
+Ratios, 90th percentile or lumpy distribution data then you want to compute empirical variability
+
+
+|Type of Metric|Distribution|Estimated Variance|
+|:---:|:---:|:---:|
+|Probability|Binomial (normal)|<a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;{\frac{\hat{p}*(1-\hat{p})}{N}}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\bg_white&space;{\frac{\hat{p}*(1-\hat{p})}{N}}" title="{\frac{\hat{p}*(1-\hat{p})}{N}}" /></a>|
+|Mean|Normal| <a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;\frac{\hat{\sigma}&space;^{2}}{n}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\bg_white&space;\frac{\hat{\sigma}&space;^{2}}{n}" title="\frac{\hat{\sigma} ^{2}}{n}" /></a>|
+|Median/Percentile|Depends|Depends|
+|Count/Difference|Normal|<i>Var(X) + Var(Y)</i>|
+|Rates|Poisson|<a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;\hat{X}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\bg_white&space;\hat{X}" title="\hat{X}" /></a> (mean)|
+|Ratios <a href="https://www.codecogs.com/eqnedit.php?latex=\bg_white&space;(\frac{\hat{p}_{exp}}{\hat{p}_{cont}})" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\bg_white&space;(\frac{\hat{p}_{exp}}{\hat{p}_{cont}})" title="(\frac{\hat{p}_{exp}}{\hat{p}_{cont}})" /></a>|Depends|Depends|
+
+
+
+Calculating Variability
+Eg. To calculate a confidence interval you need:
+* Variance (or standard deviation)
+* Distribution
+
+Knowledge of binomial distribution is used for SE formula and margin of error formula depends on the fact that binomial distribution approaches normal distribution as N gets larger
+Binomial distribution:
+SE = sqrt(p * (1-p)/N) 
+width of standard error: m = z * SE
+
+Non-parametric methods, can be measured without making assumptions of the distribution of data
+* Sign test - Eg. If expirement ran for 20 days and if 15 of those days exp has higher measurement than control 
+ + easy to do and can do under a lot of different circumstances
+ - does not help estimate size of the effect
+
+
+
+
+  
 
 References:
 
